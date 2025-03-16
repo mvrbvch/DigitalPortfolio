@@ -11,7 +11,14 @@
     @apply bg-[#0f1014] text-[#e2e8f0] font-mono;
   }
 
-  .content__title {
-    @apply font-mono bg-gradient-to-r from-[#e2e8f0] to-[#e2e8f0]/70 bg-clip-text text-transparent;
+  .title {
+    background: linear-gradient(to right, rgb(226 232 240), rgb(226 232 240 / 0.7));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section {
+    opacity: 0.999; /* Creates stacking context for better rendering */
   }
 }

@@ -30,14 +30,14 @@ export default function Experience() {
   useEffect(() => {
     if (!contentRef.current) return;
 
-    const sections = contentRef.current.querySelectorAll('.content__section');
+    const sections = contentRef.current.querySelectorAll('.section');
 
     sections.forEach((section) => {
-      const titleEl = section.querySelector('.content__title') as HTMLElement;
-      const title = new SplitType(titleEl, { types: 'chars' });
+      const titleEl = section.querySelector('.title') as HTMLElement;
+      const split = new SplitType(titleEl, { types: 'chars' });
 
       // Reset chars position
-      gsap.set(title.chars, {
+      gsap.set(split.chars, {
         opacity: 0.2,
         y: () => gsap.utils.random(-100, 100),
         rotateX: () => gsap.utils.random(-90, 90),
@@ -52,7 +52,7 @@ export default function Experience() {
           scrub: true,
         }
       })
-      .to(title.chars, {
+      .to(split.chars, {
         opacity: 1,
         y: 0,
         rotateX: 0,
@@ -62,7 +62,7 @@ export default function Experience() {
         },
         ease: "power4.out",
       })
-      .from(section.querySelector('.content__text'), {
+      .from(section.querySelector('.description'), {
         opacity: 0,
         y: 20,
         duration: 0.5,
@@ -71,20 +71,20 @@ export default function Experience() {
   }, []);
 
   return (
-    <div className="content py-40" ref={contentRef}>
+    <div className="min-h-screen py-40" ref={contentRef}>
       <div className="max-w-[90rem] mx-auto px-8">
         {experiences.map((exp, index) => (
-          <div key={index} className="content__section mb-40 last:mb-0">
-            <div className="grid grid-cols-12 gap-8">
-              <div className="col-span-8">
-                <h2 className="content__title text-[12rem] font-mono leading-none tracking-tight">
+          <div key={index} className="section mb-40 last:mb-0">
+            <div className="flex flex-col md:flex-row gap-8">
+              <div className="md:w-2/3">
+                <h2 className="title text-[8rem] md:text-[12rem] font-mono leading-[0.9] tracking-tight">
                   {exp.title}
                 </h2>
               </div>
-              <div className="col-span-4 self-center">
-                <div className="content__text text-xl leading-relaxed text-muted-foreground">
+              <div className="md:w-1/3 self-end">
+                <p className="description text-xl text-muted-foreground leading-relaxed">
                   {exp.description}
-                </div>
+                </p>
               </div>
             </div>
           </div>
