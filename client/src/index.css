@@ -4,10 +4,14 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border antialiased;
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply bg-[#0f1014] text-[#e2e8f0] font-mono;
+  }
+
+  .content__title {
+    @apply font-mono bg-gradient-to-r from-[#e2e8f0] to-[#e2e8f0]/70 bg-clip-text text-transparent;
   }
 }
