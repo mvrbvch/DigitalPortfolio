@@ -20,24 +20,30 @@ export function initScrollAnimations() {
     });
   });
 
-  // Initialize text reveal animations
-  const textElements = gsap.utils.toArray<HTMLElement>(".reveal-text");
-  textElements.forEach((text) => {
+  // Initialize text reveal animations for headings
+  gsap.utils.toArray<HTMLElement>(".reveal-text").forEach((text) => {
     const split = new SplitType(text, {
-      types: "chars,words",
+      types: "chars",
       absolute: false,
     });
 
     gsap.from(split.chars, {
       scrollTrigger: {
         trigger: text,
-        start: "top bottom-=100",
+        start: "top bottom",
         end: "top center",
-        scrub: 0.5,
+        scrub: 1,
       },
-      opacity: 0.2,
-      stagger: 0.05,
-      ease: "power2.out",
+      opacity: 0.1,
+      scale: 0,
+      y: gsap.utils.random(-100, 100),
+      rotationX: gsap.utils.random(-90, 90),
+      transformOrigin: "50% 50% -50",
+      stagger: {
+        amount: 0.5,
+        from: "random"
+      },
+      ease: "power4.out",
     });
   });
 }

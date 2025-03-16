@@ -22,111 +22,106 @@ const experiences = [
     date: "Nov 2023 — Oct 2024",
     title: "Senior Software Engineer",
     company: "RD Saúde",
-    description: "Spearheaded healthcare solutions development using React, React Native, and Node.js. Implemented best practices in software development, ensuring high-quality deliverables and optimal performance. Led cross-functional teams to create innovative healthcare technology solutions.",
+    description: "Spearheaded healthcare solutions development using React, React Native, and Node.js. Implemented best practices in software development, ensuring high-quality deliverables and optimal performance.",
   },
   {
     date: "Jan 2018 — Aug 2021",
     title: "Lead Frontend Engineer",
     company: "Napp Solutions",
-    description: "Led teams working on critical systems like Esphera, serving hundreds of Brazilian shopping malls. Implemented TypeScript, Figma workflows, and custom Design Systems. Managed large-scale applications with React, Vue, and Node.js, improving development efficiency and product quality.",
+    description: "Led teams working on critical systems like Esphera, serving hundreds of Brazilian shopping malls. Implemented TypeScript, Figma workflows, and custom Design Systems. Managed large-scale applications with React, Vue, and Node.js.",
   }
 ];
 
 export default function Experience() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const experiencesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    if (!contentRef.current) return;
 
-    experiencesRef.current.forEach((expRef, index) => {
-      if (!expRef) return;
+    sectionsRef.current.forEach((section, index) => {
+      if (!section) return;
 
-      const title = new SplitType(expRef.querySelector('.company')!, {
+      // Split company name into characters
+      const companyText = new SplitType(section.querySelector('.company')!, {
         types: 'chars',
         absolute: false
       });
 
-      const description = new SplitType(expRef.querySelector('.description')!, {
-        types: 'words',
-        absolute: false
-      });
-
-      const tl = gsap.timeline({
+      // Create timeline for each section
+      gsap.timeline({
         scrollTrigger: {
-          trigger: expRef,
-          start: "top center",
+          trigger: section,
+          start: "top center+=100",
           end: "bottom center",
-          scrub: 0.5,
+          scrub: 1,
         }
-      });
-
-      // Animate company name chars
-      tl.fromTo(title.chars, 
+      })
+      .fromTo(companyText.chars, 
         {
-          opacity: 0.2,
-          scale: 0.8,
+          opacity: 0.1,
+          scale: 0,
+          y: gsap.utils.random(-100, 100),
+          rotationX: gsap.utils.random(-90, 90),
+          transformOrigin: "50% 50% -50",
         },
         {
           opacity: 1,
           scale: 1,
-          duration: 0.3,
-          ease: "power2.out",
+          y: 0,
+          rotationX: 0,
           stagger: {
-            amount: 0.2,
-            from: "start"
-          }
+            amount: 0.5,
+            from: "random"
+          },
+          ease: "power4.out",
         }
       );
 
-      // Animate description words
-      tl.fromTo(description.words,
-        {
-          opacity: 0,
-          y: 20,
+      // Fade in description with slight delay
+      gsap.from(section.querySelector('.description'), {
+        scrollTrigger: {
+          trigger: section,
+          start: "top center+=100",
+          end: "bottom center",
+          scrub: 1,
         },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          ease: "power2.out",
-          stagger: {
-            amount: 0.3,
-            from: "start"
-          }
-        },
-        "<0.1"
-      );
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: "power2.out",
+      });
     });
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 min-h-screen bg-background">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold mb-16 text-center">Experience</h2>
-        <div className="space-y-32">
-          {experiences.map((exp, index) => (
-            <div
-              key={index}
-              ref={el => experiencesRef.current[index] = el}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
-            >
-              <div className="order-2 md:order-1">
-                <p className="description text-lg text-muted-foreground leading-relaxed">
-                  {exp.description}
-                </p>
-              </div>
-              <div className="order-1 md:order-2 text-right">
-                <h3 className="company text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/50">
-                  {exp.company}
-                </h3>
-                <p className="text-xl text-muted-foreground mb-2">{exp.title}</p>
-                <p className="text-sm text-muted-foreground">{exp.date}</p>
+    <div className="py-32 bg-background" ref={contentRef}>
+      <div className="content max-w-7xl mx-auto px-4">
+        <h2 className="text-4xl font-bold mb-32 text-center">Experience</h2>
+
+        {experiences.map((exp, index) => (
+          <div
+            key={index}
+            ref={el => sectionsRef.current[index] = el}
+            className="content__section mb-64 last:mb-0 grid grid-cols-1 md:grid-cols-2 gap-16 items-start"
+          >
+            <div className="content__left">
+              <h3 className="company text-6xl md:text-8xl font-bold mb-4 leading-none bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/50">
+                {exp.company}
+              </h3>
+              <div className="mt-4 text-muted-foreground">
+                <p className="text-xl font-medium">{exp.title}</p>
+                <p className="text-sm">{exp.date}</p>
               </div>
             </div>
-          ))}
-        </div>
+            <div className="content__right">
+              <p className="description text-xl leading-relaxed text-muted-foreground">
+                {exp.description}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
-    </section>
+    </div>
   );
 }
