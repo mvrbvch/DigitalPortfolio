@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,8 +10,9 @@
   }
 
   body {
-    @apply bg-[#0f1014] text-[#e2e8f0] font-mono;
+    @apply bg-[#0f1014] text-[#e2e8f0] font-montserrat;
     overflow-x: hidden;
+    background: linear-gradient(135deg, #1a0b2e 0%, #130428 100%);
   }
 
   .title {
@@ -149,4 +152,45 @@
 .button-3d:active {
   transform: translateY(1px) translateZ(0);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* New gradient backgrounds inspired by your site */
+.bg-gradient-purple {
+  background: linear-gradient(135deg, #3b1c7e 0%, #6d33ff 100%);
+}
+
+.bg-gradient-pink {
+  background: linear-gradient(135deg, #9c2cf3 0%, #ff6bc3 100%);
+}
+
+.bg-gradient-blue {
+  background: linear-gradient(135deg, #2b3ce8 0%, #39b8ff 100%);
+}
+
+.text-gradient-purple {
+  background: linear-gradient(135deg, #b721ff 0%, #8a2be2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-blue-pink {
+  background: linear-gradient(90deg, #00c6ff 0%, #ff72a3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Creative Development highlight */
+.creative-development {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-style: italic;
+  padding: 0.2em 0.5em;
+  border-radius: 0.4em;
+  background: linear-gradient(90deg, #13B0F5 -2.06%, #E70FAA 100%);
+  box-shadow: 0 0 30px rgba(231, 15, 170, 0.3);
+  display: inline-block;
+  transform: skew(-5deg);
+  margin: 0 0.2em;
 }

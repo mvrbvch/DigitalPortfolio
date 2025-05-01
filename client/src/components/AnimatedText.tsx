@@ -42,22 +42,22 @@ export default function AnimatedText({
     switch(textStyle) {
       case 'gradient':
         return {
-          backgroundImage: 'linear-gradient(to right, #F95738, #EE964B, #F4D35E)',
+          backgroundImage: 'linear-gradient(90deg, #13B0F5 -2.06%, #E70FAA 100%)',
           WebkitBackgroundClip: 'text',
           backgroundClip: 'text',
           color: 'transparent',
-          textShadow: '0 0 30px rgba(249, 87, 56, 0.2)'
+          textShadow: '0 0 30px rgba(231, 15, 170, 0.3)'
         };
       case 'accent':
         return {
-          color: '#F95738',
-          textShadow: '0 0 10px rgba(249, 87, 56, 0.3)'
+          color: '#E70FAA',
+          textShadow: '0 0 15px rgba(231, 15, 170, 0.4)'
         };
       case 'outline':
         return {
-          WebkitTextStroke: '1px rgba(249, 87, 56, 0.7)',
+          WebkitTextStroke: '1px rgba(19, 176, 245, 0.7)',
           color: 'transparent',
-          textShadow: '0 0 15px rgba(249, 87, 56, 0.1)'
+          textShadow: '0 0 15px rgba(19, 176, 245, 0.3)'
         };
       default:
         return {};
@@ -103,9 +103,9 @@ export default function AnimatedText({
         const wordText = word.textContent?.trim().toLowerCase();
         if (wordText && highlightWords.some(hw => wordText.includes(hw.toLowerCase()))) {
           gsap.set(word, {
-            color: '#F95738', // Using your primary color
+            color: '#13B0F5', // Usando a cor ciano da sua paleta
             fontWeight: '700',
-            textShadow: '0 0 10px rgba(249, 87, 56, 0.3)' // Adding subtle glow
+            textShadow: '0 0 10px rgba(19, 176, 245, 0.4)' // Adicionando brilho sutil
           });
         }
       });
@@ -148,7 +148,7 @@ export default function AnimatedText({
               y: -10,
               rotationX: 10,
               scale: 1.1,
-              color: textStyle === 'gradient' ? undefined : '#F95738',
+              color: textStyle === 'gradient' ? undefined : '#E70FAA',
               duration: 0.4,
               ease: "back.out(2)",
               overwrite: true
