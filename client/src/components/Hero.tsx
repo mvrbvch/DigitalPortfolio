@@ -4,7 +4,6 @@ import { ArrowDown, ExternalLink, Github, Linkedin, Mail } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import ThreeBackground from "./ThreeBackground";
-import LensEffect from "./LensEffect";
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,6 +49,17 @@ export default function Hero() {
         duration: 1,
         ease: "power2.out"
       });
+      
+      // Particle movement based on mouse position
+      const particles = containerRef.current?.querySelector('.particles-canvas');
+      if (particles) {
+        gsap.to(particles, {
+          x: mouseX * -30,
+          y: mouseY * -30,
+          duration: 2,
+          ease: "power2.out"
+        });
+      }
     };
 
     // Animate social links
@@ -65,6 +75,19 @@ export default function Hero() {
         ease: "back.out(1.7)",
       });
     }
+    
+    // Floating animation for decorative elements
+    const decorativeElements = document.querySelectorAll('.hero-decorative-element');
+    decorativeElements.forEach((element, index) => {
+      gsap.to(element, {
+        y: `${Math.sin(index) * 20}px`,
+        x: `${Math.cos(index) * 20}px`,
+        duration: 3 + index,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+    });
 
     window.addEventListener('mousemove', handleMouseMove);
     
@@ -80,10 +103,15 @@ export default function Hero() {
       className="min-h-screen flex flex-col justify-center items-center p-4 relative overflow-hidden"
     >
       {/* 3D Particles Background */}
-      <ThreeBackground />
+      <div className="particles-canvas">
+        <ThreeBackground 
+          particleDensity={2000}
+          colorScheme="mixed"
+        />
+      </div>
       
-      {/* Lens Effect */}
-      <LensEffect />
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
       
       {/* Overlay with blur effect */}
       <div className="absolute inset-0 backdrop-blur bg-gradient-to-b from-transparent to-background/30" />
@@ -91,6 +119,12 @@ export default function Hero() {
       {/* Animated gradient orbs - inspired by Sarah Guo Portfolio */}
       <div className="absolute top-1/4 -left-[10vw] w-[50vw] h-[50vw] rounded-full bg-gradient-to-r from-purple-500/10 to-blue-500/10 blur-3xl animate-blob animation-delay-4000"></div>
       <div className="absolute bottom-1/4 -right-[10vw] w-[40vw] h-[40vw] rounded-full bg-gradient-to-r from-pink-500/10 to-purple-500/10 blur-3xl animate-blob"></div>
+      
+      {/* Decorative elements */}
+      <div className="hero-decorative-element absolute top-[15%] left-[10%] w-6 h-6 rounded-full border border-primary/30 opacity-60"></div>
+      <div className="hero-decorative-element absolute top-[20%] right-[15%] w-8 h-8 rounded-full border border-purple-500/30 opacity-60"></div>
+      <div className="hero-decorative-element absolute bottom-[25%] left-[20%] w-10 h-10 rounded-full border border-blue-500/30 opacity-60"></div>
+      <div className="hero-decorative-element absolute bottom-[15%] right-[10%] w-12 h-12 rounded-full border border-primary/30 opacity-60"></div>
 
       {/* Social media links - inspired by Developer Portfolio Hero */}
       <div 
