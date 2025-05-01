@@ -94,9 +94,9 @@ export default function Experience() {
 
       // Reset chars position
       gsap.set(split.chars, {
-        opacity: 0.2,
-        y: () => gsap.utils.random(-100, 100),
-        rotateX: () => gsap.utils.random(-90, 90),
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
       });
 
       // Create scroll animation for title
@@ -221,7 +221,7 @@ export default function Experience() {
               <div className="flex flex-col lg:flex-row gap-8">
                 {/* Left side - Title and date */}
                 <div className="lg:w-1/2">
-                  <h2 className="title text-[5rem] md:text-[7rem] font-mono leading-[0.9] tracking-tight text-foreground">
+                  <h2 className="title text-[5rem] md:text-[7rem] font-mono leading-[0.9] tracking-tight text-foreground opacity-100">
                     {exp.title}
                   </h2>
                   <p className="animate-content text-xl text-primary/90 font-semibold mt-4">{exp.date}</p>
