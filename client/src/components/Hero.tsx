@@ -161,7 +161,10 @@ export default function Hero() {
           <AnimatedText
             text="Matheus Murbach"
             tag="h1"
-            className="text-7xl md:text-9xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/50"
+            className="text-7xl md:text-9xl font-bold mb-6"
+            textStyle="gradient"
+            staggerWords={true}
+            revealFromDirection="left"
             splitOptions={{ types: 'chars, words' }}
             animation={{
               chars: {
@@ -170,14 +173,14 @@ export default function Hero() {
                 rotateX: -90,
                 stagger: 0.02,
                 duration: 1,
-                ease: "back.out(1.7)",
+                ease: "expo.out",
               },
               words: {
                 opacity: 0,
                 x: -50,
                 duration: 1,
                 stagger: 0.1,
-                ease: "power2.out",
+                ease: "expo.out",
               }
             }}
           />
@@ -185,15 +188,18 @@ export default function Hero() {
           <AnimatedText
             text="Software Engineer"
             tag="h2"
-            className="text-3xl md:text-5xl text-muted-foreground mb-8"
+            className="text-3xl md:text-5xl mb-8"
+            textStyle="outline"
             splitOptions={{ types: 'words' }}
+            staggerWords={true}
+            revealFromDirection="right"
             animation={{
               words: {
                 opacity: 0,
                 y: 20,
                 stagger: 0.1,
                 duration: 0.8,
-                ease: "power2.out",
+                ease: "expo.out",
               }
             }}
             delay={0.5}
@@ -203,13 +209,15 @@ export default function Hero() {
             text="Full-Stack Developer | Node.js, TypeScript, React, React Native & AI Enthusiast"
             className="text-lg md:text-xl text-muted-foreground mb-12"
             splitOptions={{ types: 'words' }}
+            highlightWords={["Node.js", "TypeScript", "React", "AI"]}
+            revealFromDirection="bottom"
             animation={{
               words: {
                 opacity: 0,
-                x: -30,
+                y: 20,
                 stagger: 0.05,
                 duration: 0.8,
-                ease: "power2.out",
+                ease: "power3.out",
               }
             }}
             delay={1}

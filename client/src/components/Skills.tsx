@@ -6,6 +6,7 @@ import SplitType from "split-type";
 import * as THREE from "three";
 import Metamorph3D from "./Metamorph3D";
 import RotatingText from "./RotatingText";
+import AnimatedText from "./AnimatedText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -353,12 +354,15 @@ export default function Skills() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row gap-16">
           <div className="lg:w-2/3">
-            <h2 
-              ref={titleRef}
-              className="text-4xl md:text-6xl font-bold mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-blue-400"
-            >
-              Technical Skills
-            </h2>
+            <AnimatedText 
+              text="Technical Skills"
+              tag="h2"
+              className="text-4xl md:text-6xl font-bold mb-16"
+              textStyle="gradient"
+              staggerWords={true}
+              revealFromDirection="left"
+              splitOptions={{ types: 'chars, words' }}
+            />
             
             <div className="space-y-12">
               {Object.entries(skillsByCategory).map(([category, skillsInCategory]) => (
