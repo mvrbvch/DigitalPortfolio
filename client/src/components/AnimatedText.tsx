@@ -45,16 +45,19 @@ export default function AnimatedText({
           backgroundImage: 'linear-gradient(to right, #F95738, #EE964B, #F4D35E)',
           WebkitBackgroundClip: 'text',
           backgroundClip: 'text',
-          color: 'transparent'
+          color: 'transparent',
+          textShadow: '0 0 30px rgba(249, 87, 56, 0.2)'
         };
       case 'accent':
         return {
-          color: '#F95738'
+          color: '#F95738',
+          textShadow: '0 0 10px rgba(249, 87, 56, 0.3)'
         };
       case 'outline':
         return {
           WebkitTextStroke: '1px rgba(249, 87, 56, 0.7)',
-          color: 'transparent'
+          color: 'transparent',
+          textShadow: '0 0 15px rgba(249, 87, 56, 0.1)'
         };
       default:
         return {};
@@ -100,8 +103,9 @@ export default function AnimatedText({
         const wordText = word.textContent?.trim().toLowerCase();
         if (wordText && highlightWords.some(hw => wordText.includes(hw.toLowerCase()))) {
           gsap.set(word, {
-            color: '#3b82f6',
-            fontWeight: '700'
+            color: '#F95738', // Using your primary color
+            fontWeight: '700',
+            textShadow: '0 0 10px rgba(249, 87, 56, 0.3)' // Adding subtle glow
           });
         }
       });
@@ -110,8 +114,64 @@ export default function AnimatedText({
     // Get directional properties for animations
     const directionalProps = getDirectionalProperties();
     
-    if (staggerWords && split.words && splitOptions.types.includes('words')) {
-      // Staggered word animation (Federico Pian style)
+    // Codrops text effect style animation
+    if (split.chars && (textStyle === 'gradient' || textStyle === 'outline')) {
+      // Apply 3D perspective
+      gsap.set(textRef.current, { perspective: 1000, transformStyle: 'preserve-3d' });
+      
+      // Set initial state for all characters
+      gsap.set(split.chars, { 
+        opacity: 0, 
+        y: 100, 
+        rotationX: -90,
+        transformOrigin: '50% 50% -20px'
+      });
+      
+      // Animate each character with staggered delay
+      tl.to(split.chars, {
+        duration: 1.2,
+        opacity: 1,
+        y: 0,
+        rotationX: 0,
+        stagger: {
+          each: 0.02,
+          from: "start"
+        },
+        ease: "power4.out"
+      });
+      
+      // Add hover effect to each character
+      if (Tag === 'h1' || Tag === 'h2') {
+        split.chars.forEach((char) => {
+          char.addEventListener('mouseenter', () => {
+            gsap.to(char, {
+              y: -10,
+              rotationX: 10,
+              scale: 1.1,
+              color: textStyle === 'gradient' ? undefined : '#F95738',
+              duration: 0.4,
+              ease: "back.out(2)",
+              overwrite: true
+            });
+          });
+          
+          char.addEventListener('mouseleave', () => {
+            gsap.to(char, {
+              y: 0,
+              rotationX: 0,
+              scale: 1,
+              color: textStyle === 'gradient' ? undefined : 'inherit',
+              duration: 0.4,
+              ease: "power2.out",
+              overwrite: true
+            });
+          });
+        });
+      }
+    } 
+    // Regular animation flows
+    else if (staggerWords && split.words && splitOptions.types.includes('words')) {
+      // Staggered word animation
       tl.from(split.words, {
         opacity: 0,
         ...directionalProps,
@@ -204,9 +264,12 @@ export default function AnimatedText({
     };
   }, [delay, animation, splitOptions, highlightWords, staggerWords, revealFromDirection]);
 
+  // Use a more specific approach to handle the rendering with the correct type
+  const Component = Tag;
+  
   return (
-    <Tag 
-      ref={textRef} 
+    <Component 
+      ref={textRef as any} // Cast to any to avoid TypeScript errors
       className={`${className} animated-text-element`}
       style={{
         visibility: isVisible ? 'visible' : 'hidden',
@@ -214,6 +277,6 @@ export default function AnimatedText({
       }}
     >
       {text}
-    </Tag>
+    </Component>
   );
 }

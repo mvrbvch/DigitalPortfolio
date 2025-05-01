@@ -163,26 +163,9 @@ export default function Hero() {
             tag="h1"
             className="text-7xl md:text-[10rem] font-extrabold mb-6 tracking-tight leading-none"
             textStyle="gradient"
-            staggerWords={true}
-            revealFromDirection="bottom"
             splitOptions={{ types: 'chars, words' }}
-            animation={{
-              chars: {
-                opacity: 0,
-                y: 100,
-                rotateX: -80,
-                stagger: 0.03,
-                duration: 1.2,
-                ease: "expo.out",
-              },
-              words: {
-                opacity: 0,
-                scale: 0.9,
-                duration: 1.2,
-                stagger: 0.15,
-                ease: "expo.out",
-              }
-            }}
+            // Using the new Codrops effect style
+            // The 3D text appear effect with staggered animation from bottom to top
           />
 
           <AnimatedText
@@ -191,18 +174,8 @@ export default function Hero() {
             className="text-3xl md:text-6xl mb-8 font-light opacity-80 tracking-wide"
             textStyle="outline"
             splitOptions={{ types: 'chars' }}
-            staggerWords={true}
-            revealFromDirection="right"
-            animation={{
-              chars: {
-                opacity: 0,
-                x: 20,
-                stagger: 0.02,
-                duration: 1,
-                ease: "expo.out",
-              }
-            }}
             delay={0.7}
+            // Using the outline style with the Codrops effect
           />
 
           <AnimatedText
