@@ -204,7 +204,7 @@ export default function Experience() {
       </div>
 
       <div className="max-w-6xl mx-auto px-8">
-        <h2 className="section-title text-4xl md:text-5xl font-bold mb-20 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+        <h2 className="section-title text-4xl md:text-5xl font-bold mb-20 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#13B0F5] to-[#E70FAA]">
           Professional Experience
         </h2>
         
