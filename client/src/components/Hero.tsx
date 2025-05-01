@@ -1,14 +1,19 @@
 import AnimatedText from "./AnimatedText";
 import { Button } from "./ui/button";
 import { ArrowDown } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import ThreeBackground from "./ThreeBackground";
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
+
+    // Mark as loaded to trigger animations
+    setIsLoaded(true);
 
     const tl = gsap.timeline();
 
@@ -26,18 +31,45 @@ export default function Hero() {
         scrub: true
       },
       backdropFilter: "blur(20px)",
-      backgroundColor: "rgba(255, 255, 255, 0.1)"
+      backgroundColor: "rgba(0, 0, 0, 0.2)"
     });
+
+    // Mouse parallax effect for hero content
+    const handleMouseMove = (e: MouseEvent) => {
+      const content = containerRef.current?.querySelector('.hero-content');
+      if (!content) return;
+      
+      const mouseX = e.clientX / window.innerWidth - 0.5;
+      const mouseY = e.clientY / window.innerHeight - 0.5;
+      
+      gsap.to(content, {
+        x: mouseX * 20,
+        y: mouseY * 20,
+        duration: 1,
+        ease: "power2.out"
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   return (
     <section 
+      id="hero"
       ref={containerRef}
       className="min-h-screen flex flex-col justify-center items-center p-4 relative overflow-hidden"
     >
+      {/* 3D Particles Background */}
+      <ThreeBackground />
+      
+      {/* Overlay with blur effect */}
       <div className="absolute inset-0 backdrop-blur bg-gradient-to-b from-transparent to-background/30" />
 
-      <div className="max-w-4xl mx-auto text-center relative z-10">
+      <div className="hero-content max-w-4xl mx-auto text-center relative z-10">
         <AnimatedText
           text="Matheus Murbach"
           tag="h1"
