@@ -4,6 +4,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Card, CardContent } from "./ui/card";
 import SplitType from "split-type";
 import * as THREE from "three";
+import Metamorph3D from "./Metamorph3D";
+import RotatingText from "./RotatingText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -185,6 +187,25 @@ function SkillSphere() {
 }
 
 export default function Skills() {
+  // Função para retornar gradientes baseados na categoria
+  const getSkillCategoryGradient = (category: string): string => {
+    switch(category) {
+      case 'Languages':
+        return 'linear-gradient(to right, #3b82f6, #60a5fa)'; // Blues
+      case 'Frontend':
+        return 'linear-gradient(to right, #8b5cf6, #a78bfa)'; // Purples
+      case 'Mobile':
+        return 'linear-gradient(to right, #ec4899, #f472b6)'; // Pinks
+      case 'Backend':
+        return 'linear-gradient(to right, #06b6d4, #67e8f9)'; // Cyans
+      case 'Graphics':
+        return 'linear-gradient(to right, #10b981, #34d399)'; // Emeralds
+      case 'DevOps & Cloud':
+        return 'linear-gradient(to right, #f59e0b, #fbbf24)'; // Ambers
+      default:
+        return 'linear-gradient(to right, #3b82f6, #60a5fa)'; // Default blue
+    }
+  };
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -284,6 +305,37 @@ export default function Skills() {
     <section ref={sectionRef} className="py-32 relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background z-0" />
+      
+      {/* Rotating text accent */}
+      <div className="absolute top-20 right-10 opacity-20 pointer-events-none hidden md:block">
+        <RotatingText 
+          text="SKILLS•EXPERTISE•TECHNOLOGIES•" 
+          className="w-64 h-64"
+          speed={10}
+        />
+      </div>
+      
+      {/* Metamorphic 3D elements */}
+      <div className="absolute top-40 left-20 w-64 h-64 opacity-30 pointer-events-none hidden md:block">
+        <Metamorph3D 
+          variant="icosahedron"
+          color="#8b5cf6"  // Purple
+          wireframe={true}
+          speed={0.5}
+          size={1.5}
+        />
+      </div>
+      
+      <div className="absolute bottom-40 right-10 w-48 h-48 opacity-30 pointer-events-none hidden md:block">
+        <Metamorph3D 
+          variant="torus"
+          color="#06b6d4"  // Cyan
+          wireframe={true}
+          speed={0.7}
+          size={1.2}
+        />
+      </div>
+      
       <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
         <div className="w-full h-full" style={{ filter: 'blur(40px)' }}>
           <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -303,7 +355,7 @@ export default function Skills() {
           <div className="lg:w-2/3">
             <h2 
               ref={titleRef}
-              className="text-4xl md:text-5xl font-bold mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70"
+              className="text-4xl md:text-6xl font-bold mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-blue-400"
             >
               Technical Skills
             </h2>
@@ -316,8 +368,20 @@ export default function Skills() {
                   onMouseEnter={() => setActiveCategory(category)}
                   onMouseLeave={() => setActiveCategory(null)}
                 >
-                  <h3 className="category-header text-2xl font-semibold mb-6">
+                  <h3 
+                    className="category-header text-2xl font-semibold mb-6 relative"
+                    style={{ 
+                      background: getSkillCategoryGradient(category),
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text'
+                    }}
+                  >
                     {category}
+                    <span 
+                      className="block h-1 w-16 mt-1 rounded-full transition-all duration-300 opacity-70"
+                      style={{ background: getSkillCategoryGradient(category) }}
+                    ></span>
                   </h3>
                   
                   <div className="space-y-4">
@@ -335,8 +399,11 @@ export default function Skills() {
                         </div>
                         <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                           <div 
-                            className="skill-bar-fill h-full bg-gradient-to-r from-primary to-primary/60 rounded-full transition-all duration-500"
-                            style={{ width: `${skill.level}%` }}
+                            className="skill-bar-fill h-full rounded-full transition-all duration-500"
+                            style={{ 
+                              width: `${skill.level}%`,
+                              background: getSkillCategoryGradient(category)
+                            }}
                           />
                         </div>
                       </div>
