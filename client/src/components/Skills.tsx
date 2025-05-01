@@ -64,14 +64,19 @@ function SkillSphere() {
     if (!containerRef.current) return;
 
     const init = () => {
+      if (!containerRef.current) return;
+      
       // Setup scene
       sceneRef.current = new THREE.Scene();
       
       // Setup camera
-      const { clientWidth, clientHeight } = containerRef.current;
+      const element = containerRef.current;
+      const width = element.clientWidth;
+      const height = element.clientHeight;
+      
       cameraRef.current = new THREE.PerspectiveCamera(
         75, 
-        clientWidth / clientHeight, 
+        width / height, 
         0.1, 
         1000
       );
@@ -82,9 +87,9 @@ function SkillSphere() {
         alpha: true,
         antialias: true 
       });
-      rendererRef.current.setSize(clientWidth, clientHeight);
+      rendererRef.current.setSize(width, height);
       rendererRef.current.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      containerRef.current.appendChild(rendererRef.current.domElement);
+      element.appendChild(rendererRef.current.domElement);
       
       // Create a sphere geometry with points
       const geometry = new THREE.IcosahedronGeometry(1, 3);
@@ -242,10 +247,11 @@ export default function Skills() {
     const cards = sectionRef.current.querySelectorAll('.skill-card');
     
     cards.forEach((card) => {
-      card.addEventListener('mousemove', (e) => {
+      card.addEventListener('mousemove', (e: Event) => {
+        const mouseEvent = e as MouseEvent;
         const rect = (card as HTMLElement).getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        const x = mouseEvent.clientX - rect.left;
+        const y = mouseEvent.clientY - rect.top;
         
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
