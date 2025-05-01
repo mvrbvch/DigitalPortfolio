@@ -221,7 +221,7 @@ export default function Experience() {
               <div className="flex flex-col lg:flex-row gap-8">
                 {/* Left side - Title and date */}
                 <div className="lg:w-1/2">
-                  <h2 className="title text-[5rem] md:text-[7rem] font-mono leading-[0.9] tracking-tight">
+                  <h2 className="title text-[5rem] md:text-[7rem] font-mono leading-[0.9] tracking-tight text-foreground">
                     {exp.title}
                   </h2>
                   <p className="animate-content text-xl text-primary/90 font-semibold mt-4">{exp.date}</p>
