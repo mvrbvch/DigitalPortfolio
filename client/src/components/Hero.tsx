@@ -161,25 +161,25 @@ export default function Hero() {
           <AnimatedText
             text="Matheus Murbach"
             tag="h1"
-            className="text-7xl md:text-9xl font-bold mb-6"
+            className="text-7xl md:text-[10rem] font-extrabold mb-6 tracking-tight leading-none"
             textStyle="gradient"
             staggerWords={true}
-            revealFromDirection="left"
+            revealFromDirection="bottom"
             splitOptions={{ types: 'chars, words' }}
             animation={{
               chars: {
                 opacity: 0,
-                y: 50,
-                rotateX: -90,
-                stagger: 0.02,
-                duration: 1,
+                y: 100,
+                rotateX: -80,
+                stagger: 0.03,
+                duration: 1.2,
                 ease: "expo.out",
               },
               words: {
                 opacity: 0,
-                x: -50,
-                duration: 1,
-                stagger: 0.1,
+                scale: 0.9,
+                duration: 1.2,
+                stagger: 0.15,
                 ease: "expo.out",
               }
             }}
@@ -188,63 +188,71 @@ export default function Hero() {
           <AnimatedText
             text="Software Engineer"
             tag="h2"
-            className="text-3xl md:text-5xl mb-8"
+            className="text-3xl md:text-6xl mb-8 font-light opacity-80 tracking-wide"
             textStyle="outline"
-            splitOptions={{ types: 'words' }}
+            splitOptions={{ types: 'chars' }}
             staggerWords={true}
             revealFromDirection="right"
             animation={{
-              words: {
+              chars: {
                 opacity: 0,
-                y: 20,
-                stagger: 0.1,
-                duration: 0.8,
+                x: 20,
+                stagger: 0.02,
+                duration: 1,
                 ease: "expo.out",
               }
             }}
-            delay={0.5}
+            delay={0.7}
           />
 
           <AnimatedText
             text="Full-Stack Developer | Node.js, TypeScript, React, React Native & AI Enthusiast"
-            className="text-lg md:text-xl text-muted-foreground mb-12"
+            className="text-lg md:text-xl text-muted-foreground mb-16"
             splitOptions={{ types: 'words' }}
             highlightWords={["Node.js", "TypeScript", "React", "AI"]}
             revealFromDirection="bottom"
             animation={{
               words: {
                 opacity: 0,
-                y: 20,
-                stagger: 0.05,
+                y: 30,
+                stagger: 0.04,
                 duration: 0.8,
                 ease: "power3.out",
               }
             }}
-            delay={1}
+            delay={1.2}
           />
 
-          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+          <div className="flex flex-wrap gap-6 justify-center md:justify-start">
             <Button
               size="lg"
-              className="opacity-0 animate-[fadeIn_0.5s_1.5s_forwards] bg-primary/80 hover:bg-primary backdrop-blur-sm button-3d"
+              className="opacity-0 animate-[fadeIn_0.5s_1.5s_forwards] bg-primary hover:bg-primary/90 
+              rounded-full px-8 shadow-[0_0_20px_rgba(249,87,56,0.3)] transition-all duration-500 
+              hover:shadow-[0_0_30px_rgba(249,87,56,0.5)] relative overflow-hidden group"
               onClick={() => {
                 document.getElementById("experience")?.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              View My Work
-              <ArrowDown className="ml-2 h-4 w-4" />
+              <span className="relative z-10">View My Work</span>
+              <ArrowDown className="ml-2 h-4 w-4 relative z-10" />
+              <span className="absolute inset-0 bg-gradient-to-r from-[#F95738] via-[#EE964B] to-[#F4D35E] opacity-0 
+              group-hover:opacity-100 transition-opacity duration-500"></span>
             </Button>
             
             <Button
               variant="outline"
               size="lg"
-              className="opacity-0 animate-[fadeIn_0.5s_1.7s_forwards] border-muted-foreground/30 hover:border-primary backdrop-blur-sm button-3d"
+              className="opacity-0 animate-[fadeIn_0.5s_1.7s_forwards] 
+              border-2 border-primary/40 hover:border-primary text-primary hover:text-primary/90
+              backdrop-blur-sm rounded-full px-8 transition-all duration-500 relative overflow-hidden group"
               onClick={() => {
                 document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              Contact Me
-              <ExternalLink className="ml-2 h-4 w-4" />
+              <span className="relative z-10">Contact Me</span>
+              <ExternalLink className="ml-2 h-4 w-4 relative z-10" />
+              <span className="absolute inset-0 bg-primary/10 scale-x-0 group-hover:scale-x-100 
+              transition-transform duration-500 origin-left"></span>
             </Button>
           </div>
         </div>

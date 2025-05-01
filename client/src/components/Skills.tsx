@@ -304,8 +304,20 @@ export default function Skills() {
   
   return (
     <section ref={sectionRef} className="py-32 relative overflow-hidden">
-      {/* Background elements */}
+      {/* Background elements - Federico Pian inspired */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background z-0" />
+      
+      {/* Federico Pian style decorative elements */}
+      <div className="absolute top-20 -left-20 w-64 h-64 rounded-full bg-blue-500/5 blur-3xl"></div>
+      <div className="absolute bottom-40 -right-20 w-80 h-80 rounded-full bg-purple-500/5 blur-3xl"></div>
+      
+      {/* Animated gradient lines */}
+      <div className="absolute inset-0 opacity-10 overflow-hidden">
+        <div className="absolute top-[20%] left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent animate-pulse"></div>
+        <div className="absolute top-[40%] left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent animate-pulse animation-delay-1000"></div>
+        <div className="absolute top-[60%] left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent animate-pulse animation-delay-2000"></div>
+        <div className="absolute top-[80%] left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent animate-pulse animation-delay-3000"></div>
+      </div>
       
       {/* Rotating text accent */}
       <div className="absolute top-20 right-10 opacity-20 pointer-events-none hidden md:block">
@@ -354,15 +366,12 @@ export default function Skills() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row gap-16">
           <div className="lg:w-2/3">
-            <AnimatedText 
-              text="Technical Skills"
-              tag="h2"
-              className="text-4xl md:text-6xl font-bold mb-16"
-              textStyle="gradient"
-              staggerWords={true}
-              revealFromDirection="left"
-              splitOptions={{ types: 'chars, words' }}
-            />
+            <h2 
+              ref={titleRef}
+              className="text-4xl md:text-6xl font-bold mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-blue-400"
+            >
+              Technical Skills
+            </h2>
             
             <div className="space-y-12">
               {Object.entries(skillsByCategory).map(([category, skillsInCategory]) => (
@@ -373,7 +382,7 @@ export default function Skills() {
                   onMouseLeave={() => setActiveCategory(null)}
                 >
                   <h3 
-                    className="category-header text-2xl font-semibold mb-6 relative"
+                    className="category-header text-2xl font-semibold mb-6 relative overflow-hidden"
                     style={{ 
                       background: getSkillCategoryGradient(category),
                       WebkitBackgroundClip: 'text',
@@ -381,9 +390,19 @@ export default function Skills() {
                       backgroundClip: 'text'
                     }}
                   >
-                    {category}
+                    <span className="relative inline-block">
+                      {category}
+                      <span 
+                        className={`block h-0.5 w-0 absolute bottom-0 left-0 rounded-full transition-all duration-700 ease-out ${
+                          activeCategory === category ? 'w-full' : 'w-0'
+                        }`}
+                        style={{ background: getSkillCategoryGradient(category) }}
+                      ></span>
+                    </span>
                     <span 
-                      className="block h-1 w-16 mt-1 rounded-full transition-all duration-300 opacity-70"
+                      className={`block h-1 w-16 mt-2 rounded-full transition-all duration-500 ${
+                        activeCategory === category ? 'w-24 opacity-100' : 'w-16 opacity-70'
+                      }`}
                       style={{ background: getSkillCategoryGradient(category) }}
                     ></span>
                   </h3>
@@ -392,23 +411,49 @@ export default function Skills() {
                     {skillsInCategory.map((skill, index) => (
                       <div 
                         key={index}
-                        className={`skill-item transition-all duration-300 ${
-                          activeCategory === category ? 'opacity-100 scale-100' : 
-                          activeCategory ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
+                        className={`skill-item transition-all duration-500 ${
+                          activeCategory === category ? 'opacity-100 scale-100 translate-x-0' : 
+                          activeCategory ? 'opacity-50 scale-95 translate-x-2' : 'opacity-100 scale-100 translate-x-0'
                         }`}
+                        style={{ transitionDelay: `${index * 50}ms` }}
                       >
                         <div className="flex justify-between mb-2">
-                          <span className="font-medium">{skill.name}</span>
-                          <span className="text-sm text-muted-foreground">{skill.level}%</span>
+                          <span className="font-medium relative group">
+                            {skill.name}
+                            <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary/50 group-hover:w-full transition-all duration-300 ease-in-out"></span>
+                          </span>
+                          <span 
+                            className={`text-sm font-medium transition-all duration-300 ${activeCategory === category ? 'text-primary' : 'text-muted-foreground'}`}
+                            style={{ 
+                              background: activeCategory === category ? getSkillCategoryGradient(category) : 'none',
+                              WebkitBackgroundClip: activeCategory === category ? 'text' : 'none',
+                              WebkitTextFillColor: activeCategory === category ? 'transparent' : 'inherit',
+                              backgroundClip: activeCategory === category ? 'text' : 'none'
+                            }}
+                          >
+                            {skill.level}%
+                          </span>
                         </div>
-                        <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                        <div className="h-2 w-full bg-muted/50 rounded-full overflow-hidden backdrop-blur-sm">
                           <div 
-                            className="skill-bar-fill h-full rounded-full transition-all duration-500"
+                            className="skill-bar-fill h-full rounded-full transition-all duration-700 relative"
                             style={{ 
                               width: `${skill.level}%`,
-                              background: getSkillCategoryGradient(category)
+                              background: getSkillCategoryGradient(category),
+                              boxShadow: activeCategory === category ? '0 0 8px rgba(59, 130, 246, 0.5)' : 'none'
                             }}
-                          />
+                          >
+                            {/* Pulse effect on active category */}
+                            {activeCategory === category && (
+                              <span 
+                                className="absolute right-0 top-0 h-full aspect-square rounded-full animate-ping"
+                                style={{ 
+                                  background: getSkillCategoryGradient(category),
+                                  opacity: 0.6
+                                }}
+                              ></span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     ))}

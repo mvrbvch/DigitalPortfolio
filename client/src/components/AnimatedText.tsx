@@ -42,18 +42,18 @@ export default function AnimatedText({
     switch(textStyle) {
       case 'gradient':
         return {
-          backgroundImage: 'linear-gradient(to right, #3b82f6, #8b5cf6, #06b6d4)',
+          backgroundImage: 'linear-gradient(to right, #F95738, #EE964B, #F4D35E)',
           WebkitBackgroundClip: 'text',
           backgroundClip: 'text',
           color: 'transparent'
         };
       case 'accent':
         return {
-          color: '#3b82f6'
+          color: '#F95738'
         };
       case 'outline':
         return {
-          WebkitTextStroke: '1px rgba(59, 130, 246, 0.5)',
+          WebkitTextStroke: '1px rgba(249, 87, 56, 0.7)',
           color: 'transparent'
         };
       default:
