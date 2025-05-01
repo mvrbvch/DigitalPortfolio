@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function ContactGlobe() {
   const containerRef = useRef<HTMLDivElement>(null);
