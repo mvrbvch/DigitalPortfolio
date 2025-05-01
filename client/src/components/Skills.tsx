@@ -368,7 +368,7 @@ export default function Skills() {
           <div className="lg:w-2/3">
             <h2 
               ref={titleRef}
-              className="text-4xl md:text-6xl font-bold mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-blue-400"
+              className="text-4xl md:text-6xl font-bold mb-16 bg-clip-text bg-gradient-to-r from-primary/100 via-purple-500/100 to-blue-400/100 z-10"
             >
               Technical Skills
             </h2>
