@@ -22,3 +22,7 @@
     opacity: 0.999; /* Creates stacking context for better rendering */
   }
 }
+
+.char {
+  color: black
+}
