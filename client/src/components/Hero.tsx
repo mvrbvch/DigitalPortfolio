@@ -1,12 +1,14 @@
 import AnimatedText from "./AnimatedText";
 import { Button } from "./ui/button";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, ExternalLink, Github, Linkedin, Mail } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import ThreeBackground from "./ThreeBackground";
+import LensEffect from "./LensEffect";
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const socialRef = useRef<HTMLDivElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -50,6 +52,20 @@ export default function Hero() {
       });
     };
 
+    // Animate social links
+    if (socialRef.current) {
+      const links = socialRef.current.querySelectorAll('.social-link');
+      
+      gsap.from(links, {
+        opacity: 0,
+        y: 20,
+        stagger: 0.1,
+        delay: 1.8,
+        duration: 0.5,
+        ease: "back.out(1.7)",
+      });
+    }
+
     window.addEventListener('mousemove', handleMouseMove);
     
     return () => {
@@ -66,77 +82,170 @@ export default function Hero() {
       {/* 3D Particles Background */}
       <ThreeBackground />
       
+      {/* Lens Effect */}
+      <LensEffect />
+      
       {/* Overlay with blur effect */}
       <div className="absolute inset-0 backdrop-blur bg-gradient-to-b from-transparent to-background/30" />
 
-      <div className="hero-content max-w-4xl mx-auto text-center relative z-10">
-        <AnimatedText
-          text="Matheus Murbach"
-          tag="h1"
-          className="text-7xl md:text-9xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/50"
-          splitOptions={{ types: 'chars, words' }}
-          animation={{
-            chars: {
-              opacity: 0,
-              y: 50,
-              rotateX: -90,
-              stagger: 0.02,
-              duration: 1,
-              ease: "back.out(1.7)",
-            },
-            words: {
-              opacity: 0,
-              x: -50,
-              duration: 1,
-              stagger: 0.1,
-              ease: "power2.out",
-            }
-          }}
-        />
+      {/* Animated gradient orbs - inspired by Sarah Guo Portfolio */}
+      <div className="absolute top-1/4 -left-[10vw] w-[50vw] h-[50vw] rounded-full bg-gradient-to-r from-purple-500/10 to-blue-500/10 blur-3xl animate-blob animation-delay-4000"></div>
+      <div className="absolute bottom-1/4 -right-[10vw] w-[40vw] h-[40vw] rounded-full bg-gradient-to-r from-pink-500/10 to-purple-500/10 blur-3xl animate-blob"></div>
 
-        <AnimatedText
-          text="Software Engineer"
-          tag="h2"
-          className="text-3xl md:text-5xl text-muted-foreground mb-8"
-          splitOptions={{ types: 'words' }}
-          animation={{
-            words: {
-              opacity: 0,
-              y: 20,
-              stagger: 0.1,
-              duration: 0.8,
-              ease: "power2.out",
-            }
-          }}
-          delay={0.5}
-        />
-
-        <AnimatedText
-          text="Full-Stack Developer | Node.js, TypeScript, React, React Native & AI Enthusiast"
-          className="text-lg md:text-xl text-muted-foreground mb-12"
-          splitOptions={{ types: 'words' }}
-          animation={{
-            words: {
-              opacity: 0,
-              x: -30,
-              stagger: 0.05,
-              duration: 0.8,
-              ease: "power2.out",
-            }
-          }}
-          delay={1}
-        />
-
-        <Button
-          size="lg"
-          className="opacity-0 animate-[fadeIn_0.5s_1.5s_forwards] bg-primary/80 hover:bg-primary backdrop-blur-sm"
-          onClick={() => {
-            document.getElementById("experience")?.scrollIntoView({ behavior: "smooth" });
-          }}
+      {/* Social media links - inspired by Developer Portfolio Hero */}
+      <div 
+        ref={socialRef}
+        className="fixed left-8 bottom-8 z-50 flex-col gap-6 hidden md:flex"
+      >
+        <a 
+          href="https://github.com/matheusmurbach" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="social-link w-10 h-10 flex items-center justify-center rounded-full border border-muted hover:border-primary hover:text-primary transition-colors duration-300"
         >
-          View My Work
-          <ArrowDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Github className="w-5 h-5" />
+        </a>
+        <a 
+          href="https://linkedin.com/in/matheusmurbach" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="social-link w-10 h-10 flex items-center justify-center rounded-full border border-muted hover:border-primary hover:text-primary transition-colors duration-300"
+        >
+          <Linkedin className="w-5 h-5" />
+        </a>
+        <a 
+          href="mailto:matheus@murbach.work" 
+          className="social-link w-10 h-10 flex items-center justify-center rounded-full border border-muted hover:border-primary hover:text-primary transition-colors duration-300"
+        >
+          <Mail className="w-5 h-5" />
+        </a>
+        <div className="w-px h-24 bg-muted/50 mx-auto"></div>
+      </div>
+
+      <div className="hero-content max-w-5xl mx-auto text-center md:text-left relative z-10 flex flex-col md:flex-row items-center">
+        <div className="md:w-2/3">
+          <AnimatedText
+            text="Matheus Murbach"
+            tag="h1"
+            className="text-7xl md:text-9xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/50"
+            splitOptions={{ types: 'chars, words' }}
+            animation={{
+              chars: {
+                opacity: 0,
+                y: 50,
+                rotateX: -90,
+                stagger: 0.02,
+                duration: 1,
+                ease: "back.out(1.7)",
+              },
+              words: {
+                opacity: 0,
+                x: -50,
+                duration: 1,
+                stagger: 0.1,
+                ease: "power2.out",
+              }
+            }}
+          />
+
+          <AnimatedText
+            text="Software Engineer"
+            tag="h2"
+            className="text-3xl md:text-5xl text-muted-foreground mb-8"
+            splitOptions={{ types: 'words' }}
+            animation={{
+              words: {
+                opacity: 0,
+                y: 20,
+                stagger: 0.1,
+                duration: 0.8,
+                ease: "power2.out",
+              }
+            }}
+            delay={0.5}
+          />
+
+          <AnimatedText
+            text="Full-Stack Developer | Node.js, TypeScript, React, React Native & AI Enthusiast"
+            className="text-lg md:text-xl text-muted-foreground mb-12"
+            splitOptions={{ types: 'words' }}
+            animation={{
+              words: {
+                opacity: 0,
+                x: -30,
+                stagger: 0.05,
+                duration: 0.8,
+                ease: "power2.out",
+              }
+            }}
+            delay={1}
+          />
+
+          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+            <Button
+              size="lg"
+              className="opacity-0 animate-[fadeIn_0.5s_1.5s_forwards] bg-primary/80 hover:bg-primary backdrop-blur-sm button-3d"
+              onClick={() => {
+                document.getElementById("experience")?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              View My Work
+              <ArrowDown className="ml-2 h-4 w-4" />
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="lg"
+              className="opacity-0 animate-[fadeIn_0.5s_1.7s_forwards] border-muted-foreground/30 hover:border-primary backdrop-blur-sm button-3d"
+              onClick={() => {
+                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              Contact Me
+              <ExternalLink className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+        
+        {/* Decorative code snippets - inspired by Developer Portfolio design */}
+        <div className="md:w-1/3 hidden md:block relative mt-8 md:mt-0">
+          <div className="glass p-6 rounded-xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+            <pre className="text-xs text-muted-foreground/80">
+              <code>
+{`function Developer() {
+  const [skills, setSkills] = useState([
+    'React', 'Node.js', 'TypeScript',
+    'Three.js', 'GSAP'
+  ]);
+  
+  return (
+    <Portfolio 
+      name="Matheus Murbach"
+      role="Software Engineer"
+      passion="Creating amazing web 
+              experiences" 
+    />
+  );
+}`}
+              </code>
+            </pre>
+          </div>
+          
+          <div className="glass p-4 rounded-xl absolute -bottom-4 -left-4 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+            <div className="flex items-center gap-2 text-xs text-primary">
+              <div className="w-3 h-3 rounded-full bg-primary animate-pulse"></div>
+              Passionate about building digital experiences
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 animate-[fadeIn_0.5s_2s_forwards]">
+        <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 mb-2 flex items-start justify-center p-1">
+          <div className="w-1 h-2 bg-primary rounded-full animate-bounce"></div>
+        </div>
+        <span className="text-xs text-muted-foreground">Scroll Down</span>
       </div>
     </section>
   );
