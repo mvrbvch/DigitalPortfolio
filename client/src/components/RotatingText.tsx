@@ -51,7 +51,9 @@ export default function RotatingText({
       const y = Math.sin(angle) * radius;
 
       // Set position
-      charElem.style.transform = `translate(${x}px, ${y}px) rotate(${angle + Math.PI / 2}rad)`;
+      charElem.style.transform = `translate(${x}px, ${y}px) rotate(${
+        angle + Math.PI / 2
+      }rad)`;
 
       textRef.current.appendChild(charElem);
     }

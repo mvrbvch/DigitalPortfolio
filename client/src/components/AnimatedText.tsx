@@ -213,7 +213,7 @@ export default function AnimatedText({
             ease: "power3.out",
             ...animation.words,
           },
-          "<0.2",
+          "<0.2"
         );
       }
 
@@ -228,7 +228,7 @@ export default function AnimatedText({
             ease: "power2.out",
             ...animation.lines,
           },
-          "<0.2",
+          "<0.2"
         );
       }
 
@@ -290,11 +290,11 @@ export default function AnimatedText({
   ]);
 
   // Use a more specific approach to handle the rendering with the correct type
-  const Component = Tag;
+  const Component = Tag as keyof JSX.IntrinsicElements;
 
   return (
     <Component
-      ref={textRef as any} // Cast to any to avoid TypeScript errors
+      ref={textRef} // Properly typed ref
       className={`${className} animated-text-element`}
       style={{
         visibility: isVisible ? "visible" : "hidden",

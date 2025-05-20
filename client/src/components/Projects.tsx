@@ -16,7 +16,7 @@ const projects = [
     description:
       "A complete e-commerce solution with product management, shopping cart, and payment processing integration.",
     image:
-      'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400" preserveAspectRatio="none"%3E%3Crect fill="%232563eb" fill-opacity="0.2" width="600" height="400"/%3E%3Ctext x="300" y="200" style="fill:%232563eb;font-family:Arial;font-size:24px;font-weight:bold;text-anchor:middle"%3EE-commerce Platform%3C/text%3E%3C/svg%3E',
+      "https://images.unsplash.com/photo-1621600411688-4be93cd68504?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     technologies: ["React", "Node.js", "MongoDB", "Stripe API"],
     link: "#",
   },
@@ -83,7 +83,7 @@ export default function Projects() {
       },
     });
 
-    // Set up parallax effect for images
+    // Ensure carousel items are visible
     const projectItems = carouselRef.current?.querySelectorAll(".project-item");
     if (projectItems) {
       projectItems.forEach((item) => {
@@ -144,7 +144,7 @@ export default function Projects() {
               duration: 0.8,
               ease: "power3.out",
             },
-            0,
+            0
           );
         }
       });
@@ -157,23 +157,25 @@ export default function Projects() {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen py-32 relative overflow-hidden bg-background"
+      className="min-h-screen py-32 relative overflow-hidden bg-background/80 w-full"
     >
       {/* Background pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
 
-      <div className="absolute bottom-40 left-20 w-40 h-40 opacity-20 pointer-events-none hidden md:block"></div>
+      <div className="absolute  left-20 w-40 h-40 opacity-20 pointer-events-none hidden md:block"></div>
 
-      <div className="container max-w-6xl mx-auto px-6">
-        <h2
-          ref={titleRef}
-          className="text-4xl md:text-6xl font-bold mb-16 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-blue-400"
-        >
-          Featured Projects
-        </h2>
+      <div className="container max-w-none mx-auto px-6">
+        <div className="lg:w-2/3 flex justify-center items-center mx-auto">
+          <h2
+            ref={titleRef}
+            className="text-4xl md:text-6xl font-bold z-10 mb-20"
+          >
+            Featured Projects
+          </h2>
+        </div>
 
         {/* Projects carousel - inspired by Funkhaus */}
-        <div className="relative mt-20">
+        <div className="relative mt-0">
           {/* Carousel navigation */}
           <div className="flex justify-between items-center mb-10">
             <div className="flex items-center gap-4">

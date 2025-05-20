@@ -1,164 +1,88 @@
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import gsap from 'gsap';
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 
-interface LensEffectProps {
-  className?: string;
-}
+const LensRefractionShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    distortion: { value: 0.2 },
+    distortion2: { value: 0.1 },
+    speed: { value: 0.1 },
+    time: { value: 0 },
+  },
+  vertexShader: `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: `
+    uniform sampler2D tDiffuse;
+    uniform float distortion;
+    uniform float distortion2;
+    uniform float speed;
+    uniform float time;
 
-export default function LensEffect({ className = '' }: LensEffectProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const lensRef = useRef<THREE.Mesh | null>(null);
-  const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const animationFrameRef = useRef<number | null>(null);
+    varying vec2 vUv;
+
+    void main() {
+      vec2 uv = vUv;
+      vec2 distortedUv = uv + (uv - 0.5) * distortion * sin(time * speed);
+      distortedUv += (uv - 0.5) * distortion2 * cos(time * speed);
+      gl_FragColor = texture2D(tDiffuse, distortedUv);
+    }
+  `,
+};
+
+const LensEffect = () => {
+  const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!mountRef.current) return;
 
-    const init = () => {
-      if (!containerRef.current) return;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 5;
 
-      // Scene setup
-      sceneRef.current = new THREE.Scene();
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    mountRef.current.appendChild(renderer.domElement);
 
-      // Camera setup
-      const element = containerRef.current;
-      const width = element.clientWidth;
-      const height = element.clientHeight;
-      
-      cameraRef.current = new THREE.PerspectiveCamera(
-        70, 
-        width / height, 
-        0.1, 
-        1000
-      );
-      cameraRef.current.position.z = 2;
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const material = new THREE.ShaderMaterial(LensRefractionShader);
+    const plane = new THREE.Mesh(geometry, material);
+    scene.add(plane);
 
-      // Renderer setup
-      rendererRef.current = new THREE.WebGLRenderer({ 
-        alpha: true,
-        antialias: true 
-      });
-      rendererRef.current.setSize(width, height);
-      rendererRef.current.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      element.appendChild(rendererRef.current.domElement);
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
 
-      // Create a lens effect with a curved sphere
-      const geometry = new THREE.SphereGeometry(0.5, 64, 64);
-      const material = new THREE.MeshPhongMaterial({
-        color: 0x2194f3,
-        transparent: true,
-        opacity: 0.15,
-        shininess: 100,
-        specular: 0xffffff,
-        refractionRatio: 0.98,
-      });
-
-      lensRef.current = new THREE.Mesh(geometry, material);
-      sceneRef.current.add(lensRef.current);
-
-      // Add ambient light
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
-      sceneRef.current.add(ambientLight);
-
-      // Add directional light
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-      directionalLight.position.set(1, 1, 1);
-      sceneRef.current.add(directionalLight);
-
-      // Add point light inside the lens
-      const pointLight = new THREE.PointLight(0x4477ff, 2, 2);
-      lensRef.current.add(pointLight);
-      pointLight.position.set(0, 0, 0.1);
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-
-      const rect = containerRef.current.getBoundingClientRect();
-      
-      // Convert mouse position to normalized device coordinates (-1 to +1)
-      mouseRef.current.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      mouseRef.current.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-    };
-
-    const handleResize = () => {
-      if (!containerRef.current || !cameraRef.current || !rendererRef.current) return;
-      
-      const element = containerRef.current;
-      const width = element.clientWidth;
-      const height = element.clientHeight;
-      
-      cameraRef.current.aspect = width / height;
-      cameraRef.current.updateProjectionMatrix();
-      
-      rendererRef.current.setSize(width, height);
-    };
+    const lensPass = new ShaderPass(LensRefractionShader);
+    composer.addPass(lensPass);
 
     const animate = () => {
-      if (!lensRef.current || !sceneRef.current || !cameraRef.current || !rendererRef.current) return;
-      
-      // Move lens towards mouse position with smooth easing
-      gsap.to(lensRef.current.position, {
-        x: mouseRef.current.x * 0.8,
-        y: mouseRef.current.y * 0.8,
-        duration: 1,
-        ease: "power2.out",
-        overwrite: "auto"
-      });
-      
-      // Rotate lens slightly based on mouse position for a dynamic feel
-      gsap.to(lensRef.current.rotation, {
-        x: mouseRef.current.y * 0.2,
-        y: mouseRef.current.x * 0.2,
-        duration: 1.5,
-        ease: "power2.out",
-        overwrite: "auto"
-      });
-      
-      // Render scene
-      rendererRef.current.render(sceneRef.current, cameraRef.current);
-      
-      // Continue animation loop
-      animationFrameRef.current = requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
+      LensRefractionShader.uniforms.time.value += 0.05;
+      composer.render();
     };
 
-    init();
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('resize', handleResize);
-    
     animate();
-    
+
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', handleResize);
-      
-      if (containerRef.current && rendererRef.current) {
-        containerRef.current.removeChild(rendererRef.current.domElement);
-      }
-      
-      if (lensRef.current) {
-        lensRef.current.geometry.dispose();
-        (lensRef.current.material as THREE.Material).dispose();
-      }
-      
-      rendererRef.current?.dispose();
+      mountRef.current?.removeChild(renderer.domElement);
     };
   }, []);
 
   return (
-    <div 
-      ref={containerRef} 
-      className={`absolute inset-0 pointer-events-none ${className}`}
-      aria-hidden="true"
-    />
+    <div ref={mountRef} className="fixed inset-0 -z-20 pointer-events-none" />
   );
-}
+};
+
+export default LensEffect;

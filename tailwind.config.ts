@@ -5,7 +5,9 @@ export default {
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     fontFamily: {
-      montserrat: ["Montserrat", "sans-serif"],
+      redHatText: ["Red Hat Text", "sans-serif"],
+      redHatDisplay: ["Red Hat Display", "sans-serif"],
+      sans: ["var(--font-sans)", "system-ui", "sans-serif"],
     },
     extend: {
       borderRadius: {

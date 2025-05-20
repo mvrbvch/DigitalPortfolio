@@ -14,7 +14,6 @@ localPort = 5000
 externalPort = 80
 
 [workflows]
-runButton = "Project"
 
 [[workflows.workflow]]
 name = "Project"
@@ -33,7 +32,8 @@ author = "agent"
 agentRequireRestartOnSave = false
 
 [[workflows.workflow.tasks]]
-task = "packager.installForAll"
+task = "packager.installForLanguage"
+args = "nodejs"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"

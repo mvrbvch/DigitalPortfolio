@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,16 +10,15 @@
   }
 
   body {
-    @apply bg-[#0f1014] text-[#e2e8f0] font-montserrat;
+    @apply bg-[#0f1014] text-[#e2e8f0] font-redHatDisplay;
     overflow-x: hidden;
-    background: linear-gradient(135deg, #1a0b2e 0%, #130428 100%);
+    background: linear-gradient(90deg, #c513c1 0%, #3892e2 100%);
   }
 
   .title {
-    background: linear-gradient(to right, rgb(226 232 240), rgb(226 232 240 / 0.7));
-    -webkit-background-clip: text;
+    /* -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background-clip: text; */
   }
 
   .section {
@@ -39,14 +38,14 @@
   /* Shadow glow effect for elements */
   .shadow-glow {
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.5),
-      0 0 30px rgba(59, 130, 246, 0.3),
-      0 0 45px rgba(59, 130, 246, 0.1);
+      0 0 30px rgba(59, 130, 246, 0.3), 0 0 45px rgba(59, 130, 246, 0.1);
   }
 
   /* Grid background pattern inspired by murbach.work */
   .bg-grid-pattern {
-    background-image:
-      linear-gradient(to right, rgb(226 232 240 / 0.1) 1px, transparent 1px),
+    background-image: linear-gradient(to right,
+        rgb(226 232 240 / 0.1) 1px,
+        transparent 1px),
       linear-gradient(to bottom, rgb(226 232 240 / 0.1) 1px, transparent 1px);
     background-size: 24px 24px;
   }
@@ -139,6 +138,9 @@
 /* Fix for SplitType colors */
 .char {
   color: inherit;
+  /* -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text; */
 }
 
 /* Glass effect */
@@ -148,7 +150,8 @@
 }
 
 .backdrop-blur {
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(0px);
+  z-index: 20;
 }
 
 /* 3D button effect */
@@ -201,8 +204,7 @@
   font-style: italic;
   padding: 0.2em 0.5em;
   border-radius: 0.4em;
-  background: linear-gradient(90deg, #13B0F5 -2.06%, #E70FAA 100%);
-  box-shadow: 0 0 30px rgba(231, 15, 170, 0.3);
+  background: linear-gradient(90deg, #13b0f5 -2.06%, #e70faa 100%);
   display: inline-block;
   transform: skew(-5deg);
   margin: 0 0.2em;
